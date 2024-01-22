@@ -14,4 +14,6 @@ unzip RCB4Lib_for_Python_V100B.zip
 cp -r RCB4Lib_for_Python_V100B/Rcb4Lib/* .
 rm -rf RCB4Lib_for_Python_V100B
 rm RCB4Lib_for_Python_V100B.zip
+black Rcb4BaseLib.py # インデントに tab が混ざっているのを修正
+sed -i 's/return 0, Rcb4BaseLib.CmdOkType.Error.value, buf/return 0, Rcb4BaseLib.CmdOkType.Error.value, txbuf/' Rcb4BaseLib.py # 変数名のミスを修正
 cd ..
