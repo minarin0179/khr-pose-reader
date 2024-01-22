@@ -6,20 +6,20 @@ filename = '../data/test.csv'
 
 # 関節数を定義
 JOINT_NUM = 22
-FrameCount = 0
+frame_count = 0
 data = []
 
 with open(filename, encoding='utf8', newline='') as f:
     csvreader = csv.reader(f, delimiter=' ')
     for row in csvreader:
-        FrameCount += 1
+        frame_count += 1
         row = list(map(int,row))
         pos2rot = lambda x: (x - 7500) * (180 / 5300)
         data.append([row[0], *map(pos2rot,row[1:])])
 
 # ファイル出力
 output = [
-    [JOINT_NUM, FrameCount],
+    [JOINT_NUM, frame_count],
     *data
 ]
 
