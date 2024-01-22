@@ -1,7 +1,7 @@
 # coding: UTF-8
 import sys
 
-sys.path.append("../Rcb4Lib")  # Rcb4Libの検索パスを追加
+sys.path.append("../lib")  # Rcb4Libの検索パスを追加
 
 from Rcb4BaseLib import Rcb4BaseLib  # Rcb4BaseLib.pyの中のRcb4BaseLibが使えるように設定
 import time  # timeが使えるように宣言
