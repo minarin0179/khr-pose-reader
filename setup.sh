@@ -2,7 +2,7 @@
 
 # USB
 apt-get update
-apt-get install usbutils
+apt-get install -y usbutils
 
 # Python
 python -m venv .venv
