@@ -1,5 +1,9 @@
 # /bin/bash
 
+# USB
+apt-get update
+apt-get install usbutils
+
 # Python
 python -m venv .venv
 . .venv/bin/activate
