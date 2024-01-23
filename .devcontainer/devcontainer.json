@@ -15,7 +15,8 @@
 		"vscode": {
 			"extensions": [
 				"ms-python.python",
-				"ms-python.black-formatter"
+				"ms-python.black-formatter",
+				"mhutchie.git-graph"
 			],
 			"settings": {
 				"python.pythonPath": "./.venv/bin/python",
