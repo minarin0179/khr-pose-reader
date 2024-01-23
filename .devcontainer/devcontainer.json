@@ -19,7 +19,7 @@
 				"mhutchie.git-graph"
 			],
 			"settings": {
-				"python.pythonPath": "./.venv/bin/python",
+				"python.defaultInterpreterPath": "./.venv/bin/python",
 				"python.analysis.extraPaths": [
 					"./lib"
 				],
