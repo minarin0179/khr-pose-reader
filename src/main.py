@@ -1,14 +1,17 @@
 # coding: UTF-8
 import sys
+from os.path import dirname, abspath, join
 
-sys.path.append("../lib")  # Rcb4Libの検索パスを追加
+lib_path = "../lib"
+lib_abs_path = abspath(join(dirname(__file__), lib_path))
+sys.path.append(lib_abs_path)  # Rcb4Libの検索パスを追加
 
 from Rcb4BaseLib import Rcb4BaseLib  # Rcb4BaseLib.pyの中のRcb4BaseLibが使えるように設定
 import time  # timeが使えるように宣言
 
 rcb4 = Rcb4BaseLib()  # rcb4をインスタンス(定義)
- 
-isOpened = rcb4.open("/dev/ttyUSB0", 115200, 1.3) #(portName,bundrate,timeout(s))
+
+isOpened = rcb4.open("/dev/ttyUSB0", 115200, 1.3)  # (portName,bundrate,timeout(s))
 
 # rcb4.openはcheckAcknowledgeの結果を返す
 # 失敗した場合に再度checkAcknowledgeを行うとエラーになるので注意
