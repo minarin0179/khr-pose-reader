@@ -16,7 +16,16 @@
 			"extensions": [
 				"ms-python.python",
 				"ms-python.black-formatter"
-			]
+			],
+			"settings": {
+				"python.pythonPath": "./.venv/bin/python",
+				"python.analysis.extraPaths": [
+					"./lib"
+				],
+				"files.insertFinalNewline": true,
+				"files.trimTrailingWhitespace": true,
+				"editor.formatOnSave": true
+			}
 		}
 	},
 	"postCreateCommand": "sh setup.sh",
