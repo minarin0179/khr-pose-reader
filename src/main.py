@@ -1,5 +1,6 @@
 # coding: UTF-8
 import sys
+import csv
 from os.path import dirname, abspath, join
 
 lib_path = "../lib"
@@ -8,14 +9,20 @@ sys.path.append(lib_abs_path)  # Rcb4Libの検索パスを追加
 
 from Rcb4BaseLib import Rcb4BaseLib  # Rcb4BaseLib.pyの中のRcb4BaseLibが使えるように設定
 
-rcb4 = Rcb4BaseLib()  # rcb4をインスタンス(定義)
+DEVICE_NAME = "/dev/ttyUSB0"  # デバイス名
+BUNDRATE = 115200  # ボーレート
+TIMEOUT = 1.3  # タイムアウト(s)
+FRAME_INTERVAL = 500
 
-isOpened = rcb4.open("/dev/ttyUSB0", 115200, 1.3)  # (portName,bundrate,timeout(s))
 
-# rcb4.openはcheckAcknowledgeの結果を返す
-# 失敗した場合に再度checkAcknowledgeを行うとエラーになるので注意
+def main():
+    rcb4 = Rcb4BaseLib()  # rcb4をインスタンス(定義)
 
-if isOpened == True:  # 通信が返ってきたとき
+    # rcb4.openはcheckAcknowledgeの結果を返す
+    if not rcb4.open(DEVICE_NAME, BUNDRATE, TIMEOUT):
+        print("checkAcknowledge error")
+        return
+
     servoDatas = [
         # SIO1-2
         rcb4.ServoData(0, 0x01, 0),  # 首
@@ -45,33 +52,55 @@ if isOpened == True:  # 通信が返ってきたとき
         rcb4.ServoData(10, 0x02, 0),  # 右足首捻り
     ]
 
+    posDatas = []
+    frame_count = 0
+
+    print("press enter to get frame")
+    print("type 'hold' to set servo motors to hold")
+    print("type 'free' to set servo motors to free")
+    print("type 'end' to end recording")
+
     while True:
         command = input()
-
-        if command == "hold":
-            rcb4.setHoldPos(servoDatas)
-        if command == "free":
-            rcb4.setFreePos(servoDatas)
-        if command == "get":
-            # サーボモーターの現在位置を取得する
-            rotations = []
-            for servodata in servoDatas:
+        if command == "":
+            positions = [0] * (len(servoDatas))
+            for index, servodata in enumerate(servoDatas):
                 (flag, posData) = rcb4.getSinglePos(servodata.Id, servodata.Sio)
-                rotation = (posData - 7500) * (180 / 5300)
-                rotations.append(rotation)
-                if flag:
-                    pass
-                    # print(f"servoId:{servodata.Id} posData:{posData} rotation:{rotation}")
+                if not flag:
+                    print("failed to get position")
+                    break
+                positions[index] = posData
+            else:
+                print(f"frame{frame_count} is successfully got")
+                print(*positions)
+                time = frame_count * FRAME_INTERVAL
+                posDatas.append([time] + positions)
+                frame_count += 1
 
-                else:
-                    pass
-                    # print(f"servoId:{servodata.Id} error")e
+        elif command == "hold":
+            rcb4.setHoldPos(servoDatas)
+            print("set servo motors to hold")
 
-            formatted_nums = [format(num, ".1f") for num in rotations]
-            print(*formatted_nums)
+        elif command == "free":
+            rcb4.setFreePos(servoDatas)
+            print("set servo motors to free")
 
-else:  # 通信が返ってきていないときはエラー
-    print("checkAcknowledge error")
+        elif command == "end":
+            print("recording is ended")
+            break
+
+        else:
+            print("invalid command")
+
+    # posDatasをcsvに書き込む
+    with open("posDatas.csv", "w") as f:
+        writer = csv.writer(f)
+        writer.writerows(posDatas, delimiter=" ")
+
+    print("posDatas.csv is successfully written")
+
+    rcb4.close()
 
 
-rcb4.close()
+if __name__ == "__main__":
+    main()
