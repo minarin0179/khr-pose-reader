@@ -95,11 +95,12 @@ def main():
             print("invalid command")
 
     # posDatasをcsvに書き込む
-    with open("posDatas.csv", "w") as f:
+    file_name = "motion.csv"
+    with open(file_name, "w") as f:
         writer = csv.writer(f)
         writer.writerows(posDatas, delimiter=" ")
 
-    print("posDatas.csv is successfully written")
+    print(f"{file_name} is successfully written")
 
     rcb4.close()
 
