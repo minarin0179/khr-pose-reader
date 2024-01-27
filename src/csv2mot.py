@@ -19,8 +19,11 @@ output = [[JOINT_NUM, frame_count], *data_body]
 # CSVファイルのパス
 csv_file_path = "../data/output.mot"
 
-with open(csv_file_path, "w", newline="") as csv_file:
-    csv_writer = csv.writer(csv_file)
-    csv_writer.writerows(output)
+output_text = f"{JOINT_NUM} {frame_count}\n"
+for row in data_body:
+    output_text += f"{", ".join(map(str, row))} \n"
 
-print(f"CSVファイルが作成されました: {csv_file_path}")
+with open(csv_file_path, "w", newline="") as mot_file:
+    mot_file.write(output_text)
+
+print(f"motファイルが作成されました: {csv_file_path}")
