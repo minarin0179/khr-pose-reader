@@ -16,4 +16,4 @@ cp -r lib/RCB4Lib_for_Python_V100B/Rcb4Lib/Rcb4BaseLib.py lib/Rcb4BaseLib/ && rm
 black lib/Rcb4BaseLib/Rcb4BaseLib.py # インデントに含まれる Tab を Space に修正
 sed -i 's/return 0, Rcb4BaseLib.CmdOkType.Error.value, buf/return 0, Rcb4BaseLib.CmdOkType.Error.value, txbuf/' lib/Rcb4BaseLib/Rcb4BaseLib.py # 変数名のミスを修正
 
-pip install lib
+pip install ./lib

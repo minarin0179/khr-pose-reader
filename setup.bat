@@ -12,4 +12,4 @@ xcopy /E /I /Y lib\RCB4Lib_for_Python_V100B\Rcb4Lib\Rcb4BaseLib.py lib\Rcb4BaseL
 black lib\Rcb4BaseLib\Rcb4BaseLib.py
 powershell -Command "(Get-Content lib\Rcb4BaseLib\Rcb4BaseLib.py -Encoding UTF8) -replace 'return 0, Rcb4BaseLib.CmdOkType.Error.value, buf', 'return 0, Rcb4BaseLib.CmdOkType.Error.value, txbuf' | Set-Content lib\Rcb4BaseLib\Rcb4BaseLib.py -Encoding UTF8"
 
-python -m pip install lib
+python -m pip install ./lib
