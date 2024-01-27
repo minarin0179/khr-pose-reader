@@ -94,8 +94,8 @@ def main():
     # posDatasをcsvに書き込む
     file_name = "motion.csv"
     with open(file_name, "w") as f:
-        writer = csv.writer(f)
-        writer.writerows(posDatas, delimiter=" ")
+        writer = csv.writer(f,delimiter = ' ')
+        writer.writerows(posDatas)
 
     print(f"{file_name} is successfully written")
 
