@@ -7,19 +7,6 @@ import khr_structure
 JOINT_NUM = 22  # 関節数
 
 
-def read_csv_file() -> np.ndarray:
-    Tk().withdraw()
-    input_file_path = filedialog.askopenfilename(
-        title="Select CSV file", filetypes=[("CSV files", "*.csv")]
-    )
-
-    if not input_file_path:
-        print("ファイルが選択されませんでした。プログラムを終了します。")
-        exit()
-
-    return pd.read_csv(input_file_path, header=None, delimiter=" ").values
-
-
 def convert_csv_to_mot(data: np.ndarray) -> np.ndarray:
     indecies = [
         khr_structure.CSV_STRUCTURE.index(element)
@@ -30,14 +17,24 @@ def convert_csv_to_mot(data: np.ndarray) -> np.ndarray:
     return data[:, 1:][:, indecies]
 
 
-def create_output_text(data):
-    return f"{JOINT_NUM} {len(data)}\n" + "\n".join(
-        [", ".join(map(str, row)) for row in data]
+def main():
+    Tk().withdraw()
+    input_file_path = filedialog.askopenfilename(
+        title="Select CSV file",
+        filetypes=[("CSV files", "*.csv")],
+        defaultextension=".csv",
     )
 
+    if not input_file_path:
+        print("ファイルが選択されませんでした。プログラムを終了します。")
+        exit()
 
-def write_mot_file(output_text):
-    Tk().withdraw()
+    csv_data = pd.read_csv(input_file_path, header=None, delimiter=" ").values
+    mot_data = convert_csv_to_mot(csv_data)
+    output_text = f"{JOINT_NUM} {len(mot_data)}\n" + "\n".join(
+        [", ".join(map(str, row)) for row in mot_data]
+    )
+
     output_file_path = filedialog.asksaveasfilename(
         title="Save MOT file",
         filetypes=[("MOT files", "*.mot")],
@@ -52,13 +49,6 @@ def write_mot_file(output_text):
         mot_file.write(output_text)
 
     print(f"motファイルが作成されました: {output_file_path}")
-
-
-def main():
-    input_data = read_csv_file()
-    converted_data = convert_csv_to_mot(input_data)
-    output_text = create_output_text(converted_data)
-    write_mot_file(output_text)
 
 
 if __name__ == "__main__":
