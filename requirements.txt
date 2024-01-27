@@ -1,2 +1,5 @@
 black
 pyserial==3.5
+numpy
+pandas
+pyarrow
