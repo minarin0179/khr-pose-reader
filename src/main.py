@@ -2,6 +2,7 @@
 import sys
 import csv
 from os.path import dirname, abspath, join
+from tkinter import Tk, filedialog
 
 lib_path = "../lib"
 lib_abs_path = abspath(join(dirname(__file__), lib_path))
@@ -90,13 +91,22 @@ def main():
         else:
             print("invalid command")
 
-    # posDatasをcsvに書き込む
-    file_name = "motion.csv"
-    with open(file_name, "w") as f:
+    Tk().withdraw()
+    output_file_path = filedialog.asksaveasfilename(
+        title="Save CSV file",
+        filetypes=[("CSV files", "*.csv")],
+        defaultextension=".csv",
+    )
+
+    if not output_file_path:
+        print("保存先が選択されませんでした。プログラムを終了します。")
+        exit()
+
+    with open(output_file_path, "w") as f:
         writer = csv.writer(f, delimiter=" ")
         writer.writerows(posDatas)
 
-    print(f"{file_name} is successfully written")
+    print(f"{output_file_path} is successfully written")
 
     rcb4.close()
 
