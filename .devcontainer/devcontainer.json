@@ -5,10 +5,6 @@
 		{
 			"type": "volume",
 			"target": "${containerWorkspaceFolder}/.venv"
-		},
-		{
-			"type": "volume",
-			"target": "${containerWorkspaceFolder}/lib"
 		}
 	],
 	"customizations": {
