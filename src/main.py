@@ -1,11 +1,5 @@
 # coding: UTF-8
-import sys
 import csv
-from os.path import dirname, abspath, join
-
-lib_path = "../lib"
-lib_abs_path = abspath(join(dirname(__file__), lib_path))
-sys.path.append(lib_abs_path)  # Rcb4Libの検索パスを追加
 
 from Rcb4BaseLib import Rcb4BaseLib  # Rcb4BaseLib.pyの中のRcb4BaseLibが使えるように設定
 

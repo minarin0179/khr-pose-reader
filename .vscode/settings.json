@@ -1,8 +1,5 @@
 {
     "python.defaultInterpreterPath": "./.venv/bin/python",
-    "python.analysis.extraPaths": [
-        "./lib"
-    ],
     "files.insertFinalNewline": true,
     "files.trimTrailingWhitespace": true,
     "editor.formatOnSave": true
