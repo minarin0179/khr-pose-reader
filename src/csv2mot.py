@@ -1,7 +1,6 @@
 import csv
+from tkinter import Tk, filedialog
 import khr_structure
-
-filename = "../data/test.csv"
 
 JOINT_NUM = 22  # 関節数
 frame_count = 0  # キーフレーム数
@@ -41,21 +40,36 @@ def csv_to_mot(data: list[str]) -> list[int]:
     return [time, *rotations]
 
 
-with open(filename, encoding="utf8", newline="") as f:
+# ファイルの読み込みダイアログを表示
+Tk().withdraw()  # Tkinterのルートウィンドウを表示しない
+input_file_path = filedialog.askopenfilename(
+    title="Select CSV file", filetypes=[("CSV files", "*.csv")]
+)
+
+if not input_file_path:
+    print("ファイルが選択されませんでした。プログラムを終了します。")
+    exit()
+
+with open(input_file_path, encoding="utf8", newline="") as f:
     csvreader = csv.reader(f, delimiter=" ")
     for row in csvreader:
         frame_count += 1
         data_body.append(csv_to_mot(row))
 
+# ファイルの書き込みダイアログを表示
+output_file_path = filedialog.asksaveasfilename(
+    title="Save MOT file", filetypes=[("MOT files", "*.mot")], defaultextension=".mot"
+)
 
-# CSVファイルのパス
-csv_file_path = "../data/output.mot"
+if not output_file_path:
+    print("保存先が選択されませんでした。プログラムを終了します。")
+    exit()
 
 output_text = f"{JOINT_NUM} {frame_count}\n"
 for row in data_body:
-    output_text += f"{", ".join(map(str, row))} \n"
+    output_text += f"{', '.join(map(str, row))} \n"
 
-with open(csv_file_path, "w", newline="") as mot_file:
+with open(output_file_path, "w", newline="") as mot_file:
     mot_file.write(output_text)
 
-print(f"motファイルが作成されました: {csv_file_path}")
+print(f"motファイルが作成されました: {output_file_path}")
