@@ -3,46 +3,63 @@ import numpy as np
 from tkinter import Tk, filedialog
 import khr_structure
 
+
 JOINT_NUM = 22  # 関節数
 
 
-indecies = np.array(
-    [
+def read_csv_file() -> np.ndarray:
+    Tk().withdraw()
+    input_file_path = filedialog.askopenfilename(
+        title="Select CSV file", filetypes=[("CSV files", "*.csv")]
+    )
+
+    if not input_file_path:
+        print("ファイルが選択されませんでした。プログラムを終了します。")
+        exit()
+
+    return pd.read_csv(input_file_path, header=None, delimiter=" ").values
+
+
+def convert_csv_to_mot(data: np.ndarray) -> np.ndarray:
+    indecies = [
         khr_structure.CSV_STRUCTURE.index(element)
         for element in khr_structure.MOT_STRUCTURE
-    ]
-)  # csvからmotへの変換用のインデックス
+    ]  # csvからmotへの変換用のインデックス
 
-# ファイルの読み込みダイアログを表示
-Tk().withdraw()  # Tkinterのルートウィンドウを表示しない
-input_file_path = filedialog.askopenfilename(
-    title="Select CSV file", filetypes=[("CSV files", "*.csv")]
-)
+    data[:, 1:] = (data[:, 1:] - 7500) * 180 / 5300
+    return data[:, 1:][:, indecies]
 
-if not input_file_path:
-    print("ファイルが選択されませんでした。プログラムを終了します。")
-    exit()
 
-data = pd.read_csv(input_file_path, header=None, delimiter=" ").values
-frame_count = len(data)  # キーフレーム数を取得
-data[:, 1:] = (data[:, 1:] - 7500) * 180 / 5300  # 位置データを回転角度に変換
-data[:, 1:] = data[:, 1:][:, indecies]  # csvからmotの構造に変換
+def create_output_text(data):
+    return f"{JOINT_NUM} {len(data)}\n" + "\n".join(
+        [", ".join(map(str, row)) for row in data]
+    )
 
-# ファイルの書き込み用テキストを作成
-output_text = f"{JOINT_NUM} {frame_count}\n"
-output_text += "\n".join([", ".join(map(str, row)) for row in data])
 
-# ファイルの書き込みダイアログを表示
-output_file_path = filedialog.asksaveasfilename(
-    title="Save MOT file", filetypes=[("MOT files", "*.mot")], defaultextension=".mot"
-)
+def write_mot_file(output_text):
+    Tk().withdraw()
+    output_file_path = filedialog.asksaveasfilename(
+        title="Save MOT file",
+        filetypes=[("MOT files", "*.mot")],
+        defaultextension=".mot",
+    )
 
-if not output_file_path:
-    print("保存先が選択されませんでした。プログラムを終了します。")
-    exit()
+    if not output_file_path:
+        print("保存先が選択されませんでした。プログラムを終了します。")
+        exit()
 
-# ファイルに書き込む
-with open(output_file_path, "w", newline="") as mot_file:
-    mot_file.write(output_text)
+    with open(output_file_path, "w", newline="") as mot_file:
+        mot_file.write(output_text)
 
-print(f"motファイルが作成されました: {output_file_path}")
+    print(f"motファイルが作成されました: {output_file_path}")
+
+
+def main():
+    input_data = read_csv_file()
+    converted_data = convert_csv_to_mot(input_data)
+    output_text = create_output_text(converted_data)
+    write_mot_file(output_text)
+
+
+if __name__ == "__main__":
+    main()
