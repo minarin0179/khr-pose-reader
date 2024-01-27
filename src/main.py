@@ -85,6 +85,7 @@ def main():
             print("set servo motors to free")
 
         elif command == "end":
+            rcb4.setHoldPos(servoDatas)
             print("recording is ended")
             break
 
