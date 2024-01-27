@@ -1,6 +1,7 @@
 # coding: UTF-8
 import csv
-
+from os.path import dirname, abspath, join
+from tkinter import Tk, filedialog
 from Rcb4BaseLib import Rcb4BaseLib  # Rcb4BaseLib.pyの中のRcb4BaseLibが使えるように設定
 
 DEVICE_NAME = "/dev/ttyUSB0"  # デバイス名
@@ -84,13 +85,22 @@ def main():
         else:
             print("invalid command")
 
-    # posDatasをcsvに書き込む
-    file_name = "motion.csv"
-    with open(file_name, "w") as f:
+    Tk().withdraw()
+    output_file_path = filedialog.asksaveasfilename(
+        title="Save CSV file",
+        filetypes=[("CSV files", "*.csv")],
+        defaultextension=".csv",
+    )
+
+    if not output_file_path:
+        print("保存先が選択されませんでした。プログラムを終了します。")
+        exit()
+
+    with open(output_file_path, "w") as f:
         writer = csv.writer(f, delimiter=" ")
         writer.writerows(posDatas)
 
-    print(f"{file_name} is successfully written")
+    print(f"{output_file_path} is successfully written")
 
     rcb4.close()
 
