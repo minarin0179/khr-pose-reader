@@ -26,33 +26,30 @@ def main():
         return
 
     servoDatas = [
-        # SIO1-2
         rcb4.ServoData(0, SIO1_4, 0),  # 首
-        rcb4.ServoData(1, SIO1_4, 0),  # 左肩捻り
-        rcb4.ServoData(2, SIO1_4, 0),  # 左肩曲げ
-        rcb4.ServoData(3, SIO1_4, 0),  # 左肘曲げ
-        rcb4.ServoData(4, SIO1_4, 0),  # 左手捻り
-        # SIO3-4
-        rcb4.ServoData(5, SIO1_4, 0),  # 左足捻り
-        rcb4.ServoData(6, SIO1_4, 0),  # 左足開閉
-        rcb4.ServoData(7, SIO1_4, 0),  # 左足前後
-        rcb4.ServoData(8, SIO1_4, 0),  # 左足膝
-        rcb4.ServoData(9, SIO1_4, 0),  # 左足首
-        rcb4.ServoData(10, SIO1_4, 0),  # 左足首捻り
-        # SIO5-6
         rcb4.ServoData(0, SIO5_8, 0),  # 腰捻り
+        rcb4.ServoData(1, SIO1_4, 0),  # 左肩捻り
         rcb4.ServoData(1, SIO5_8, 0),  # 右肩捻り
+        rcb4.ServoData(2, SIO1_4, 0),  # 左肩曲げ
         rcb4.ServoData(2, SIO5_8, 0),  # 右肩曲げ
+        rcb4.ServoData(3, SIO1_4, 0),  # 左肘曲げ
         rcb4.ServoData(3, SIO5_8, 0),  # 右肘曲げ
+        rcb4.ServoData(4, SIO1_4, 0),  # 左手捻り
         rcb4.ServoData(4, SIO5_8, 0),  # 右手捻り
-        # SIO7-8
+        rcb4.ServoData(5, SIO1_4, 0),  # 左足捻り
         rcb4.ServoData(5, SIO5_8, 0),  # 右足捻り
+        rcb4.ServoData(6, SIO1_4, 0),  # 左足開閉
         rcb4.ServoData(6, SIO5_8, 0),  # 右足開閉
+        rcb4.ServoData(7, SIO1_4, 0),  # 左足前後
         rcb4.ServoData(7, SIO5_8, 0),  # 右足前後
+        rcb4.ServoData(8, SIO1_4, 0),  # 左足膝
         rcb4.ServoData(8, SIO5_8, 0),  # 右足膝
+        rcb4.ServoData(9, SIO1_4, 0),  # 左足首
         rcb4.ServoData(9, SIO5_8, 0),  # 右足首
-        rcb4.ServoData(10, SIO5_8, 0),  # 右足首捻り
+        rcb4.ServoData(10, SIO1_4,0),  # 左足首捻り
+        rcb4.ServoData(10, SIO5_8,0),  # 右足首捻り
     ]
+
 
     posDatas = []
     frame_count = 0
