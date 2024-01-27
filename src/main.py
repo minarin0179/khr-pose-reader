@@ -72,7 +72,7 @@ def main():
             else:
                 print(f"frame{frame_count} is successfully got")
                 print(*positions)
-                time = frame_count * FRAME_INTERVAL
+                time = FRAME_INTERVAL
                 posDatas.append([time] + positions)
                 frame_count += 1
 
