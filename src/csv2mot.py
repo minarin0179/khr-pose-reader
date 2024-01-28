@@ -1,26 +1,55 @@
-import csv
+import pandas as pd
+import numpy as np
+from tkinter import Tk, filedialog
+import khr_structure
 
-filename = "../data/test.csv"
 
 JOINT_NUM = 22  # 関節数
-frame_count = 0  # キーフレーム数
-data_body = []  # データ本体
 
-with open(filename, encoding="utf8", newline="") as f:
-    csvreader = csv.reader(f, delimiter=" ")
-    pos2rot = lambda x: int((x - 7500) * 180 / 5300)
-    for row in csvreader:
-        frame_count += 1
-        row = list(map(int, row))  # 文字列を数値に変換
-        data_body.append([row[0], *map(pos2rot, row[1:])])  # 先頭は秒数なので除外
 
-output = [[JOINT_NUM, frame_count], *data_body]
+def convert_csv_to_mot(data: np.ndarray) -> np.ndarray:
+    indecies = [
+        khr_structure.CSV_STRUCTURE.index(element)
+        for element in khr_structure.MOT_STRUCTURE
+    ]  # csvからmotへの変換用のインデックス
 
-# CSVファイルのパス
-csv_file_path = "../data/output.mot"
+    data[:, 1:] = (data[:, 1:] - 7500) * 180 / 5300
+    return data[:, 1:][:, indecies]
 
-with open(csv_file_path, "w", newline="") as csv_file:
-    csv_writer = csv.writer(csv_file)
-    csv_writer.writerows(output)
 
-print(f"CSVファイルが作成されました: {csv_file_path}")
+def main():
+    Tk().withdraw()
+    input_file_path = filedialog.askopenfilename(
+        title="Select CSV file",
+        filetypes=[("CSV files", "*.csv")],
+        defaultextension=".csv",
+    )
+
+    if not input_file_path:
+        print("ファイルが選択されませんでした。プログラムを終了します。")
+        exit()
+
+    csv_data = pd.read_csv(input_file_path, header=None, delimiter=" ").values
+    mot_data = convert_csv_to_mot(csv_data)
+    output_text = f"{JOINT_NUM} {len(mot_data)}\n" + "\n".join(
+        [", ".join(map(str, row)) for row in mot_data]
+    )
+
+    output_file_path = filedialog.asksaveasfilename(
+        title="Save MOT file",
+        filetypes=[("MOT files", "*.mot")],
+        defaultextension=".mot",
+    )
+
+    if not output_file_path:
+        print("保存先が選択されませんでした。プログラムを終了します。")
+        exit()
+
+    with open(output_file_path, "w", newline="") as mot_file:
+        mot_file.write(output_text)
+
+    print(f"motファイルが作成されました: {output_file_path}")
+
+
+if __name__ == "__main__":
+    main()
