@@ -2,6 +2,7 @@
 import sys
 import csv
 from os.path import dirname, abspath, join
+from tkinter import Tk, filedialog
 
 lib_path = "../lib"
 lib_abs_path = abspath(join(dirname(__file__), lib_path))
@@ -46,10 +47,9 @@ def main():
         rcb4.ServoData(8, SIO5_8, 0),  # 右足膝
         rcb4.ServoData(9, SIO1_4, 0),  # 左足首
         rcb4.ServoData(9, SIO5_8, 0),  # 右足首
-        rcb4.ServoData(10, SIO1_4,0),  # 左足首捻り
-        rcb4.ServoData(10, SIO5_8,0),  # 右足首捻り
+        rcb4.ServoData(10, SIO1_4, 0),  # 左足首捻り
+        rcb4.ServoData(10, SIO5_8, 0),  # 右足首捻り
     ]
-
 
     posDatas = []
     frame_count = 0
@@ -72,8 +72,7 @@ def main():
             else:
                 print(f"frame{frame_count} is successfully got")
                 print(*positions)
-                time = FRAME_INTERVAL
-                posDatas.append([time] + positions)
+                posDatas.append([FRAME_INTERVAL] + positions)
                 frame_count += 1
 
         elif command == "hold":
@@ -92,13 +91,22 @@ def main():
         else:
             print("invalid command")
 
-    # posDatasをcsvに書き込む
-    file_name = "motion.csv"
-    with open(file_name, "w") as f:
-        writer = csv.writer(f,delimiter = ' ')
+    Tk().withdraw()
+    output_file_path = filedialog.asksaveasfilename(
+        title="Save CSV file",
+        filetypes=[("CSV files", "*.csv")],
+        defaultextension=".csv",
+    )
+
+    if not output_file_path:
+        print("保存先が選択されませんでした。プログラムを終了します。")
+        exit()
+
+    with open(output_file_path, "w") as f:
+        writer = csv.writer(f, delimiter=" ")
         writer.writerows(posDatas)
 
-    print(f"{file_name} is successfully written")
+    print(f"{output_file_path} is successfully written")
 
     rcb4.close()
 
