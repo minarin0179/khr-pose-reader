@@ -1,0 +1,19 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "setup",
+            "type": "shell",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "windows": {
+                "command": "${workspaceFolder}/setup.bat"
+            },
+            "linux": {
+                "command": "sh setup.sh"
+            }
+        }
+    ]
+}

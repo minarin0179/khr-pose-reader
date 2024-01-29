@@ -1,5 +1,5 @@
 black
-pyserial==3.5
+setuptools
 numpy
 pandas
 pyarrow

@@ -1,43 +1,16 @@
 # 開発環境のセットアップ
 
-Windows 上で Dev Container を使用して開発環境を構築する場合，コンテナ内で USB デバイスを利用するためにあらかじめ Windows 側で設定を行う必要があります．
+## 1. ドライバのインストール
 
-## 1. USB/IP ドライバのインストール
+[公式サイト](https://kondo-robot.com/faq/ko-driver-2023) の手順に従ってインストールしてください．
 
-以下のコマンドを実行し，USB/IP ドライバをインストールします．
+## 2. リポジトリのクローン
 
-```pwsh
-winget install usbipd
+```bash
+git clone https://github.com/minarin0179/khr-pose-reader.git
 ```
 
-## 2. USB デバイスの共有
+## 3. セットアップ
 
-以下のコマンドを実行し，共有したい USB デバイスの BUSID を確認します．
-
-```pwsh
-usbipd list
-```
-
-確認した BUSID を用いて以下のコマンドを実行し，USB デバイスを共有します．
-
-```
-usbipd bind --busid=<BUSID>
-```
-
-デバイスの共有の設定は永続化されます．
-デバイスを取り外しても，再度接続すると自動的に共有されます．
-もし，共有を解除したい場合は以下のコマンドを実行します．
-
-```
-usbipd unbind --busid=<BUSID>
-```
-
-## 3. USB デバイスの接続
-
-以下のコマンドを実行し，USB デバイスを接続します．
-
-```pwsh
-usbipd attach --wsl --busid=<BUSID>
-```
-
-詳細な情報については [公式ドキュメント](https://github.com/dorssel/usbipd-win) を参照してください．
+ロボットなしでソースコードを編集するだけの場合は，Dev Container を利用すると便利です．
+実際にロボットを動かして検証する場合は，`Ctrl + Shift + P` でコマンドパレットを開き `Tasks: Run Task` から `setup` を実行してください．
