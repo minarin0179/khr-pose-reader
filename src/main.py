@@ -109,7 +109,7 @@ def main():
         print("保存先が選択されませんでした。プログラムを終了します。")
         exit()
 
-    with open(output_file_path, "w") as f:
+    with open(output_file_path, "w", newline="") as f:
         writer = csv.writer(f, delimiter=" ")
         writer.writerows(posDatas)
 
