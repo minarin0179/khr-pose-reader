@@ -7,7 +7,7 @@ from Rcb4BaseLib import Rcb4BaseLib  # Rcb4BaseLib.pyの中のRcb4BaseLibが使�
 
 DEVICE_NAME_WIN = "COM3"
 DEVICE_NAME_LINUX = "/dev/ttyUSB0"
-BUNDRATE = 115200  # ボーレート
+BUNDRATE = [115200, 625000, 1250000]  # ボーレート
 TIMEOUT = 1.3  # タイムアウト(s)
 FRAME_INTERVAL = 500
 SIO1_4 = 0x01
@@ -15,14 +15,20 @@ SIO5_8 = 0x02
 
 
 def main():
-    rcb4 = Rcb4BaseLib()  # rcb4をインスタンス(定義)
     device_name = (
         DEVICE_NAME_WIN if platform.system() == "Windows" else DEVICE_NAME_LINUX
     )
 
-    # rcb4.openはcheckAcknowledgeの結果を返す
-    if not rcb4.open(device_name, BUNDRATE, TIMEOUT):
-        print("checkAcknowledge error")
+    for b in BUNDRATE:
+        print(f"try to connect with {b}...")
+        rcb4 = Rcb4BaseLib()
+        if rcb4.open(device_name, b, TIMEOUT):
+            print("connected")
+            break
+        else:
+            print("failed to connect")
+    else:
+        print("failed to connect any baudrate")
         return
 
     servoDatas = [
