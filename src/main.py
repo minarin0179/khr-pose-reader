@@ -98,10 +98,12 @@ def main():
 
     root = tk.Tk()
     root.withdraw()
+    root.update()
     output_file_path = filedialog.asksaveasfilename(
         title="Save CSV file",
         filetypes=[("CSV files", "*.csv")],
         defaultextension=".csv",
+        initialfile="motion.csv",
     )
     root.destroy()
 
