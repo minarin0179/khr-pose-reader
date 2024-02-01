@@ -18,7 +18,9 @@ def convert_csv_to_mot(data: np.ndarray) -> np.ndarray:
 
 
 def main():
-    Tk().withdraw()
+    root = Tk()
+    root.withdraw()
+    root.update()
     input_file_path = filedialog.askopenfilename(
         title="Select CSV file",
         filetypes=[("CSV files", "*.csv")],
@@ -39,6 +41,7 @@ def main():
         title="Save MOT file",
         filetypes=[("MOT files", "*.mot")],
         defaultextension=".mot",
+        initialfile="motion.mot",
     )
 
     if not output_file_path:
