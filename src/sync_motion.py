@@ -9,7 +9,7 @@ DEVICE_NAME_LINUX_SRC = "/dev/ttyUSB0"
 DEVICE_NAME_LINUX_DST = "/dev/ttyUSB1"
 BUNDRATE = [115200, 625000, 1250000]  # ボーレート
 TIMEOUT = 1.3  # タイムアウト(s)
-FRAME_INTERVAL = 500
+FRAME_INTERVAL = 200
 SIO1_4 = 0x01
 SIO5_8 = 0x02
 
@@ -78,18 +78,14 @@ def main():
         rcb4_src.ServoData(10, SIO5_8, 0),  # 右足首捻り
     ]
 
-    print("press enter to get frame")
-    print("type 'hold' to set servo motors to hold")
-    print("type 'free' to set servo motors to free")
-    print("type 'end' to end recording")
-
     rcb4_src.setFreePos(servoDatas)
+    servodata = rcb4_src.ServoData(1, SIO1_4, 0)
 
     while True:
-        for servodata in servoDatas:
-            (flag, posData) = rcb4_src.getSinglePos(servodata.Id, servodata.Sio)
-            if flag:
-                set_servo_position(rcb4_dst, servodata.Id, posData)
+        (flag, posData) = rcb4_src.getSinglePos(servodata.Id, servodata.Sio)
+        if flag:
+            set_servo_position(rcb4_dst, servodata.Id, posData)
+
         time.sleep(2)
 
     rcb4_src.close()
