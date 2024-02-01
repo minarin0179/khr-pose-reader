@@ -1,4 +1,5 @@
 .venv/
+__pycache__/
 lib/
 !lib/setup.py
 !lib/Rcb4BaseLib/
