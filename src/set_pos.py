@@ -1,12 +1,13 @@
 # coding: UTF-8
 import platform
 from Rcb4BaseLib import Rcb4BaseLib  # Rcb4BaseLib.pyの中のRcb4BaseLibが使えるように設定
+import time
 
 DEVICE_NAME_WIN = "COM3"
 DEVICE_NAME_LINUX = "/dev/ttyUSB0"
 BUNDRATE = 1250000  # ボーレート
 TIMEOUT = 1.3  # タイムアウト(s)
-FRAME_INTERVAL = 500
+FRAME_INTERVAL = 200
 SIO1_4 = 0x01
 SIO5_8 = 0x02
 
@@ -29,6 +30,8 @@ def main():
         return
 
     # サーボモーターID 1 に位置 5000 を設定
+    set_servo_position(rcb4, 1, 10000)
+    time.sleep(2)  # 1秒間待機
     set_servo_position(rcb4, 1, 7500)
 
     rcb4.close()
