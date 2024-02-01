@@ -1,10 +1,12 @@
 # coding: UTF-8
 import csv
-from os.path import dirname, abspath, join
-from tkinter import Tk, filedialog
+import platform
+import tkinter as tk
+from tkinter import filedialog
 from Rcb4BaseLib import Rcb4BaseLib  # Rcb4BaseLib.pyの中のRcb4BaseLibが使えるように設定
 
-DEVICE_NAME = "/dev/ttyUSB0"  # デバイス名
+DEVICE_NAME_WIN = "COM3"
+DEVICE_NAME_LINUX = "/dev/ttyUSB0"
 BUNDRATE = 115200  # ボーレート
 TIMEOUT = 1.3  # タイムアウト(s)
 FRAME_INTERVAL = 500
@@ -14,9 +16,12 @@ SIO5_8 = 0x02
 
 def main():
     rcb4 = Rcb4BaseLib()  # rcb4をインスタンス(定義)
+    device_name = (
+        DEVICE_NAME_WIN if platform.system() == "Windows" else DEVICE_NAME_LINUX
+    )
 
     # rcb4.openはcheckAcknowledgeの結果を返す
-    if not rcb4.open(DEVICE_NAME, BUNDRATE, TIMEOUT):
+    if not rcb4.open(device_name, BUNDRATE, TIMEOUT):
         print("checkAcknowledge error")
         return
 
@@ -85,12 +90,14 @@ def main():
         else:
             print("invalid command")
 
-    Tk().withdraw()
+    root = tk.Tk()
+    root.withdraw()
     output_file_path = filedialog.asksaveasfilename(
         title="Save CSV file",
         filetypes=[("CSV files", "*.csv")],
         defaultextension=".csv",
     )
+    root.destroy()
 
     if not output_file_path:
         print("保存先が選択されませんでした。プログラムを終了します。")
